@@ -1,6 +1,6 @@
 ---
 title: "GBI6 - BIOINFORMÁTICA"
-author: "Allan El Rey"
+author: "ALLAN FARINANGO"
 date: "`r Sys.Date()`"
 output:
   html_document:
