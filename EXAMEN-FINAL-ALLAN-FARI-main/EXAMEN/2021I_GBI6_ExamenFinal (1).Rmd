@@ -80,7 +80,9 @@ Para comprender la data de esta evaluación se requiere conocer el significado d
 
 ### [0.5 PUNTOS] 1.1 Defina su directorio de trabajo. 
 ```{r wd, include=FALSE}
-setwd("C:/Users/new/Documents")
+
+setwd("C:/Users/LENOVO/Videos/RESOLUCION EXAMEN/REPASO-EXAMEN-FINAL-2023/EXAMEN-FINAL-ALLAN-FARI-main/EXAMEN")
+
 
 ```
 
@@ -88,14 +90,38 @@ setwd("C:/Users/new/Documents")
 ```{r data}
 library(readr)
 
-df <- read_csv("mRNA_expr (1).csv")
+df <- read_csv("mRNA_expr.csv")
 head(df)
 ```
 
 ### [1 PUNTO] 1.3 Cree una función de nombre ```long_df``` para transformar la data ```df``` de la forma wide a long.
 
 ```{r funcion_long}
-# Escriba aquí la función long_df
+
+## CREO UN FACTOR PARA EL CUAL SE ASIGNAN LOS DATOS
+df$bcr_patient_barcode <- as.factor(df$bcr_patient_barcode)
+### METODO 1 (TIDYR)
+
+#ASIGNO LA FUNCION DE RELACION DE CARACT : VALOR
+long_df <- gather(df, caracteristica, valor, GATA3:GAPDH, factor_key = TRUE)
+### ORDENO POR PARTICIPANTE
+long_df <- long_df[order(long_df$bcr_patient_barcode),]
+# veo la funcion creada y ordenada en el cuadro
+
+View(long_df)
+
+###### METODO 2 (reshape2)
+## crea la funcion
+
+long_df2 <- melt(df, id.vars = "bcr_patient_barcode")
+### ORDENO POR PARTICIPANTE
+long_df2 <- long_df[order(long_df$bcr_patient_barcode),]
+# veo la funcion creada
+
+View(long_df2)
+
+############ long_df = long_df2
+######
 long_df=function(df) {
   m=data.frame(id=1:1463)
 
