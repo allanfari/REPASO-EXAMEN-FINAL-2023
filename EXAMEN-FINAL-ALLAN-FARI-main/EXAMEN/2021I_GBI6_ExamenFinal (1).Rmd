@@ -279,7 +279,22 @@ lapply(X = cancertype_boxplots, FUN = tcga_boxplots)
 
 ```{r reg_gen_exp}
 # Escriba aquí su función reg_gen_expression
+###gx = ggplot(data = df_long[df_long$gen == "GATA3",], aes(x = gen,y = expresion_level))
 
+ggplot(df_long, aes(gen, expresion_level, shape = factor(gen)), size = 4) + geom_point(colour = "grey90", size = 1.5)
+       
+
+ggplot(df_long$expresion_level, aes(x= df_long$gen == "GATA3", y= df_long$gen == "FN1")) + geom_point()
+
+
+df_long$gen
+
+gx + geom_line()
+
+
+as.data.frame(GATA3(gen))
+
+reg_gen_expression
 
 
 
