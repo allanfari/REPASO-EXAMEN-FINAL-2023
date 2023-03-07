@@ -280,25 +280,19 @@ lapply(X = cancertype_boxplots, FUN = tcga_boxplots)
 ```{r reg_gen_exp}
 # Escriba aquí su función reg_gen_expression
 ###gx = ggplot(data = df_long[df_long$gen == "GATA3",], aes(x = gen,y = expresion_level))
+### PRUEBA DE LA GRAFICA PARA LA CONSTRUCCION DE LA FUNCION para guia el df_long$gen = ...
+ggplot(df_long, aes((df_long$gen = 'GATA3'), (df_long$gen = 'FN1'), shape = factor(gen)), size = 4, xlim = c(0:10)) + geom_jitter(size = 0.3) + geom_point(colour = "red")
+#### SE CREA LA FUNCION QUE GRAFICA UNA COMPARACION POR LOS EJEX DE 2 GENES INTRODUCIDOS
 
-ggplot(df_long, aes(gen, expresion_level, shape = factor(gen)), size = 4) + geom_point(colour = "grey90", size = 1.5)
-       
+reg_gen_expression <- function(gen1, gen2){
+  ggplot(df_long, aes((gen = 'gen1'), (gen = 'gen2'), shape = factor(gen)), size = 4, xlim = c(0:10)) + geom_jitter(size = 0.3)
+}
 
-ggplot(df_long$expresion_level, aes(x= df_long$gen == "GATA3", y= df_long$gen == "FN1")) + geom_point()
+reg_gen_expression('PTEN','MUC1')
 
+  
 
-df_long$gen
-
-gx + geom_line()
-
-
-as.data.frame(GATA3(gen))
-
-reg_gen_expression
-
-
-
-reg_gen_expression=function(df){
+reg_gen_expression <- function(df){
   pablito=combn(1:7,2)
   graf=NULL
   df=df%>%select(gen,expresion_level)
@@ -310,19 +304,17 @@ reg_gen_expression=function(df){
       m=c(pablito[,i][1],pablito[,i][2])
       
       
-  nom=as.character(levels(df[,1]))
+nom=as.character(levels(df[,1]))
   
-  x=df[which(df$gen==nom[m[1]]),][,2]
-  y=df[which(df$gen==nom[m[2]]),][,2]
-  dft=data.frame(x,y)
+x=df[which(df$gen==nom[m[1]]),][,2]
+y=df[which(df$gen==nom[m[2]]),][,2]
+dft=data.frame(x,y)
 m=ggplot(data=dft,aes(x,y))+geom_point()+xlab(nom[m[1]])+ylab(nom[m[2]])
  
-   graf[[i]]=m
+graf[[i]]=m
     
   }
   
-  
-
   return(graf)
 }
 
@@ -331,7 +323,20 @@ m=ggplot(data=dft,aes(x,y))+geom_point()+xlab(nom[m[1]])+ylab(nom[m[2]])
 ### [0.5 PUNTOS] 2.5. Utilizando la función `lapply()` genera la lista `reg_genplots` con las gráficas para cada par de genes posibles. Recuerde que tiene 7 tipos de genes, se debe tener todas las combinaciones posibles por pares de genes (combinatoria sin repetición).
 
 ```{r list_regplots}
-# Escriba el código para generar la lista. 
+# 
+geneslap <- c("GATA3","PTEN","XBP1","ESR1","MUC1", "FN1", "GAPDH")
+
+lapply(X = geneslap, FUN = reg_gen_expression)
+
+
+
+
+
+
+
+
+
+
 reg_genplots=reg_gen_expression(df_long)
 ```
 
@@ -350,3 +355,122 @@ reg_genplots=reg_gen_expression(df_long)
 ```
 
 ## 3. CONTROL DE LA VERSIÓN [1 PUNTO]. Se verficará en ell repositorio de GitHub.
+
+
+
+
+```{r REPASO DE EXAMEN}
+# REPASO FUNCIONES
+
+canastos <- c(25, 31, 40, 28)
+mean(canastos)
+
+mortalidad <- function(muertes, poblacion,k=10 ){ if(poblacion < muertes){
+  return("la mortalidad es muy alta")
+}
+  (muertes / poblacion)*k
+}
+
+mortalidad(2000, 1000)
+
+
+#escoger aleatoriamente 2 valores
+
+sample(canastos, 2)
+
+## REPASO BUCLE FOR Y VECTORES 
+
+K <- (1:20)
+
+N <- c()
+
+for (i in 1:length(K)) {
+  N[i] <- K[i] + 1
+  
+}
+
+print(N)
+
+for (i in 1:10){
+  print(i+5)
+}
+# bucle for o es variable y K es conjunto de datos o lista
+j <- c()
+for (o in K) {
+  j[o] <- K[o] + 3
+  
+}
+print(j)
+## buscar el numero de elemento
+K[11]
+
+# en un solo paso ahorrando el for
+K+7
+K+K+K
+plot(1:100, log(1:100, base = 10))
+
+
+```
+
+```{r repaso de R}
+# SWICHT FOR WHILE REPEAT BREAK NEXT
+
+h <- 1:10
+caso <- "precio"
+switch (caso,
+        mean = mean(h),
+        median = median(h),
+        sd = sd(h),
+        suma = h+1,
+        precio = log(h)
+  
+)
+## introduccion de valores manualmente con cat en una funcion
+preg <- function(q,w){
+  cat("introduce un valor hp")
+  h <- read_lines(y = 4)
+  cat("introducir la palabra promedio, mediana, desviacion, segun desee")
+  caso <- readLines(n = 1)
+  switch (caso,
+        promedio = mean(h),
+        mediana = median(h),
+        sd = sd(h),
+        desviacion = h+1,
+        precio = log(h))
+  
+}
+
+############ PRACTICAS #####33
+
+gx <- data.frame(
+  'df_long$gen == "GATA3"' = df_long$expresion_level 
+)
+
+gy <- data.frame(
+  'df_long$gen == "FN1"' = df_long$expresion_level 
+)
+
+dn <- df_long[df_long != '31+', ]
+
+ggplot(dn, aes(x= gx, y= gy)) + geom_point(colour = 'red', size = 1.5)
+
+
+
+df_long$gen[GATA3]
+       
+
+ggplot(df_long, aes(x= df_long$gen == "GATA3", y= df_long$gen == "FN1")) + geom_point()
+
+
+df_long$gen
+
+gx + geom_line()
+
+
+as.data.frame(GATA3(gen))
+
+##gx = ggplot(data = df_long[df_long$gen == "GATA3",], aes(x = gen,y = expresion_level))
+
+
+
+```
